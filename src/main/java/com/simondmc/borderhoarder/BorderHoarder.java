@@ -33,9 +33,4 @@ public final class BorderHoarder extends JavaPlugin {
         // register world if it exists
         BorderWorldCreator.registerWorld();
     }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-    }
 }

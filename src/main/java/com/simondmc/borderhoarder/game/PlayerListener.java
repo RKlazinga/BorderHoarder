@@ -26,29 +26,30 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void cancelViewClick(InventoryClickEvent e) {
+        ItemStack currentItem = e.getCurrentItem();
         if (e.getView().getTitle().contains("Collected Items§a")) {
             e.setCancelled(true);
-            if (e.getCurrentItem() == null) return;
-            if (!e.getCurrentItem().hasItemMeta()) return;
-            if (!e.getCurrentItem().getItemMeta().hasDisplayName()) return;
+            if (currentItem == null) return;
+            if (!currentItem.hasItemMeta()) return;
+            if (!currentItem.getItemMeta().hasDisplayName()) return;
             // current page
             int page = Integer.parseInt(e.getView().getTitle().split("/")[0].split("-")[1].substring(6));
-            if (e.getCurrentItem().getItemMeta().getDisplayName().equals("§aNext Page")) {
+            if (currentItem.getItemMeta().getDisplayName().equals("§aNext Page")) {
                 e.getWhoClicked().openInventory(InventoryBuilder.buildCompletedInventory(page + 1));
-            } else if (e.getCurrentItem().getItemMeta().getDisplayName().equals("§aPrevious Page")) {
+            } else if (currentItem.getItemMeta().getDisplayName().equals("§aPrevious Page")) {
                 e.getWhoClicked().openInventory(InventoryBuilder.buildCompletedInventory(page - 1));
             }
         }
         if (e.getView().getTitle().contains("Missing Items§a")) {
             e.setCancelled(true);
-            if (e.getCurrentItem() == null) return;
-            if (!e.getCurrentItem().hasItemMeta()) return;
-            if (!e.getCurrentItem().getItemMeta().hasDisplayName()) return;
+            if (currentItem == null) return;
+            if (!currentItem.hasItemMeta()) return;
+            if (!currentItem.getItemMeta().hasDisplayName()) return;
             // current page
             int page = Integer.parseInt(e.getView().getTitle().split("/")[0].split("-")[1].substring(6));
-            if (e.getCurrentItem().getItemMeta().getDisplayName().equals("§aNext Page")) {
+            if (currentItem.getItemMeta().getDisplayName().equals("§aNext Page")) {
                 e.getWhoClicked().openInventory(InventoryBuilder.buildMissingInventory(page + 1));
-            } else if (e.getCurrentItem().getItemMeta().getDisplayName().equals("§aPrevious Page")) {
+            } else if (currentItem.getItemMeta().getDisplayName().equals("§aPrevious Page")) {
                 e.getWhoClicked().openInventory(InventoryBuilder.buildMissingInventory(page - 1));
             }
         }

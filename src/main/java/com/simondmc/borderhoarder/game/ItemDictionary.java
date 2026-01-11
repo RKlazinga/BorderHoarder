@@ -19,6 +19,7 @@ public class ItemDictionary {
 
     public static void populateDictUsingBlacklist() {
         HashSet<Material> BLACKLIST = new HashSet<>(Arrays.asList(
+                Material.AIR,
                 Material.BARRIER,
                 Material.STRUCTURE_VOID,
                 Material.STRUCTURE_BLOCK,
@@ -56,16 +57,17 @@ public class ItemDictionary {
 
         for (Material m: Material.values()) {
             ItemType itemType = m.asItemType();
-            if (itemType != null) {
-                String mDisplayName = PlainTextComponentSerializer.plainText().serialize(Component.translatable(m));
-
+            if (itemType != null) {  // many non-collectable materials have no item, so have a null itemType
+                // remove all spawn eggs
                 if (m.name().endsWith("_SPAWN_EGG")) {
                     continue;
                 }
-
+                // remove if listed in blacklist
                 if (BLACKLIST.contains(m)) {
                     continue;
                 }
+
+                String mDisplayName = PlainTextComponentSerializer.plainText().serialize(Component.translatable(m));
                 list.put(m, mDisplayName);
             }
         }

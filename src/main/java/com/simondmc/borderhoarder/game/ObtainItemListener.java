@@ -9,7 +9,6 @@ import org.bukkit.entity.Fish;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -18,45 +17,43 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import static com.simondmc.borderhoarder.world.BorderWorldCreator.worldName;
-
 public class ObtainItemListener implements Listener {
 
-    private boolean eventInBorderWorld(Entity e) {
+    private boolean eventNotInBorderWorld(Entity e) {
         if (!(e instanceof Player))  {
-            return false;
+            return true;
         }
         String worldName = e.getLocation().getWorld().getName();
-        return (worldName.equals(BorderWorldCreator.worldName) ||
-                worldName.equals(BorderWorldCreator.netherWorldName) ||
-                worldName.equals(BorderWorldCreator.endWorldName));
+        return (!worldName.equals(BorderWorldCreator.worldName) &&
+                !worldName.equals(BorderWorldCreator.netherWorldName) &&
+                !worldName.equals(BorderWorldCreator.endWorldName));
     }
 
     // picking up any dropped item from ground
     @EventHandler
     public void pickupItem(EntityPickupItemEvent e) {
-        if (!eventInBorderWorld(e.getEntity())) return;
+        if (eventNotInBorderWorld(e.getEntity())) return;
         ItemHandler.gainItem(e.getItem().getItemStack().getType(), (Player) e.getEntity());
     }
 
     // filling a water/lava/milk bucket
     @EventHandler
     public void fillBucket(PlayerBucketFillEvent e) {
-        if (!eventInBorderWorld(e.getPlayer())) return;
+        if (eventNotInBorderWorld(e.getPlayer())) return;
         ItemHandler.gainItem(e.getItemStack().getType(), e.getPlayer());
     }
 
     // placing an obtained filled bucket (village loot chest?)
     @EventHandler
     public void emptyBucket(PlayerBucketEmptyEvent e) {
-        if (!eventInBorderWorld(e.getPlayer())) return;
+        if (eventNotInBorderWorld(e.getPlayer())) return;
         ItemHandler.gainItem(e.getItemStack().getType(), e.getPlayer());
     }
 
     // catching a fish into a bucket
     @EventHandler
     public void catchFishIntoBucket(PlayerInteractEntityEvent e) {
-        if (!eventInBorderWorld(e.getPlayer())) return;
+        if (eventNotInBorderWorld(e.getPlayer())) return;
         if (!(e.getRightClicked() instanceof Fish)) return;
         if (e.getPlayer().getInventory().getItem(e.getHand()).getType() == Material.WATER_BUCKET) {
             new BukkitRunnable() {
@@ -72,7 +69,7 @@ public class ObtainItemListener implements Listener {
     // filling a bottle or map
     @EventHandler
     public void fillBottleOrMap(PlayerInteractEvent e) {
-        if (!eventInBorderWorld(e.getPlayer())) return;
+        if (eventNotInBorderWorld(e.getPlayer())) return;
         if (e.getItem() == null) return;
         if (e.getItem().getType() == Material.GLASS_BOTTLE || e.getItem().getType() == Material.MAP) {
             new BukkitRunnable() {
@@ -89,7 +86,7 @@ public class ObtainItemListener implements Listener {
     // trading with a villager
     @EventHandler
     public void trade(PlayerStatisticIncrementEvent e) {
-        if (!eventInBorderWorld(e.getPlayer())) return;
+        if (eventNotInBorderWorld(e.getPlayer())) return;
         if (e.getStatistic() != Statistic.TRADED_WITH_VILLAGER) return;
         new BukkitRunnable() {
 
@@ -109,7 +106,7 @@ public class ObtainItemListener implements Listener {
     // crafting any item
     @EventHandler
     public void craft(CraftItemEvent e) {
-        if (!eventInBorderWorld(e.getWhoClicked())) return;
+        if (eventNotInBorderWorld(e.getWhoClicked())) return;
         Material craftedItem = e.getCurrentItem().getType();
         new BukkitRunnable() {
 
@@ -126,7 +123,7 @@ public class ObtainItemListener implements Listener {
     // getting an item from a chest/whatever other container
     @EventHandler
     public void inventoryGet(InventoryClickEvent e) {
-        if (!eventInBorderWorld(e.getWhoClicked())) return;
+        if (eventNotInBorderWorld(e.getWhoClicked())) return;
         if (e.getClickedInventory() == null) return;
 
         // shift click item from somewhere else
