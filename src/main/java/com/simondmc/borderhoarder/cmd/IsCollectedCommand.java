@@ -3,15 +3,15 @@ package com.simondmc.borderhoarder.cmd;
 import com.simondmc.borderhoarder.game.ItemDictionary;
 import com.simondmc.borderhoarder.game.ItemHandler;
 import com.simondmc.borderhoarder.util.DataTypeUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class IsCollectedCommand implements CommandExecutor {
 
@@ -23,19 +23,23 @@ public class IsCollectedCommand implements CommandExecutor {
                 return true;
             }
 
-            String itemName = DataTypeUtil.joinStringArray(args, " ");
+            String queryString = StringUtils.join(args, " ");
+            List<String> negativeArgs = Arrays.stream(args).filter((a) -> a.startsWith("-")).map((a) -> a.substring(1)).toList();
+            List<String> positiveArgs = Arrays.stream(args).filter((a) -> !a.startsWith("-")).toList();
+
+            String itemName = StringUtils.join(positiveArgs, " ");
             Material item;
 
             List<String> itemList = ItemDictionary.getDict().values().stream().toList();
 
             List<String> matchingItems = itemList.stream().filter((i) -> i.toLowerCase().contains(itemName.toLowerCase())).toList();
 
-//            if (matchingItems.size() > 50) {
-//                sender.sendMessage("Too many matching items!");
-//                return true;
-//            }
+            for (String neg: negativeArgs) {
+                matchingItems = matchingItems.stream().filter((m) -> !m.toLowerCase().contains(neg.toLowerCase())).toList();
+            }
+
             if (matchingItems.isEmpty()) {
-                sender.sendMessage("§c Did not find any items matching '" + itemName + "'!");
+                sender.sendMessage("§c Did not find any items matching '" + queryString + "'!");
                 return true;
             }
             List<String> matchingCollected = new ArrayList<>();
@@ -50,7 +54,7 @@ public class IsCollectedCommand implements CommandExecutor {
                 }
             }
 
-            sender.sendMessage("§eFound " + (matchingCollected.size() + matchingNotCollected.size()) + " items matching '" + itemName + "' (" + matchingCollected.size() + " collected)");
+            sender.sendMessage("§eFound " + (matchingCollected.size() + matchingNotCollected.size()) + " items matching '" + queryString + "' (" + matchingCollected.size() + " collected)");
 
             for (String m : matchingCollected) {
                 sender.sendMessage("§a" + m + " has been collected");
