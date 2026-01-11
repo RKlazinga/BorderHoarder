@@ -56,6 +56,9 @@ public class InventoryBuilder {
             Material itemType = collectedItems.get(j);
             i = new ItemStack(itemType);
             m = i.getItemMeta();
+            if (m == null) {
+                continue;
+            }
             m.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
             String playerName = ItemHandler.getCollectedItems().get(itemType) != null ? PlayerUtil.getNameFromUUID(ItemHandler.getCollectedItems().get(itemType)) : "who knows!";
             m.setLore(Collections.singletonList("§eCollected by " + playerName));
