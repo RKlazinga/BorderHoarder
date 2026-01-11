@@ -8,7 +8,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class IsCollectedCommand implements CommandExecutor {
 
@@ -23,28 +26,37 @@ public class IsCollectedCommand implements CommandExecutor {
             String itemName = DataTypeUtil.joinStringArray(args, " ");
             Material item;
 
-            try {
-                item = Material.valueOf(itemName.toUpperCase());
-                if (!ItemDictionary.getDict().containsKey(item)) {
-                    sender.sendMessage("§c" + ItemDictionary.getDict().get(item) + " is unobtainable!");
-                    return true;
-                }
+            List<String> itemList = ItemDictionary.getDict().values().stream().toList();
+
+            List<String> matchingItems = itemList.stream().filter((i) -> i.toLowerCase().contains(itemName.toLowerCase())).toList();
+
+//            if (matchingItems.size() > 50) {
+//                sender.sendMessage("Too many matching items!");
+//                return true;
+//            }
+            if (matchingItems.isEmpty()) {
+                sender.sendMessage("§c Did not find any items matching '" + itemName + "'!");
+                return true;
+            }
+            List<String> matchingCollected = new ArrayList<>();
+            List<String> matchingNotCollected = new ArrayList<>();
+
+            for (String matching: matchingItems) {
+                item = DataTypeUtil.getKeyByCaseInsensitiveString(ItemDictionary.getDict(), matching);
                 if (ItemHandler.getCollectedItems().containsKey(item)) {
-                    sender.sendMessage("§a" + ItemDictionary.getDict().get(item) + " has been collected!");
+                    matchingCollected.add(ItemDictionary.getDict().get(item));
                 } else {
-                    sender.sendMessage("§c" + ItemDictionary.getDict().get(item) + " has not been collected!");
+                    matchingNotCollected.add(ItemDictionary.getDict().get(item));
                 }
-            } catch (Exception e) {
-                if (ItemDictionary.getDict().values().stream().map(String::toLowerCase).toList().contains(itemName.toLowerCase())) {
-                    item = DataTypeUtil.getKeyByCaseInsensitiveString(ItemDictionary.getDict(), itemName);
-                    if (ItemHandler.getCollectedItems().containsKey(item)) {
-                        sender.sendMessage("§a" + ItemDictionary.getDict().get(item) + " has been collected!");
-                    } else {
-                        sender.sendMessage("§c" + ItemDictionary.getDict().get(item) + " has not been collected!");
-                    }
-                } else {
-                    sender.sendMessage("§c'" + itemName + "' is not a valid item!");
-                }
+            }
+
+            sender.sendMessage("§eFound " + (matchingCollected.size() + matchingNotCollected.size()) + " items matching '" + itemName + "' (" + matchingCollected.size() + " collected)");
+
+            for (String m : matchingCollected) {
+                sender.sendMessage("§a" + m + " has been collected");
+            }
+            for (String m : matchingNotCollected) {
+                sender.sendMessage("§c" + m + " has not been collected");
             }
 
             return true;
