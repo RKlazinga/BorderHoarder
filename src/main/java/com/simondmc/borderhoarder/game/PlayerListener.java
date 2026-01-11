@@ -88,6 +88,10 @@ public class PlayerListener implements Listener {
         put(Material.JUNGLE_LEAVES, Material.JUNGLE_SAPLING);
         put(Material.ACACIA_LEAVES, Material.ACACIA_SAPLING);
         put(Material.DARK_OAK_LEAVES, Material.DARK_OAK_SAPLING);
+        put(Material.AZALEA_LEAVES, Material.AZALEA);
+        put(Material.CHERRY_LEAVES, Material.CHERRY_SAPLING);
+        put(Material.PALE_OAK_LEAVES, Material.PALE_OAK_SAPLING);
+        put(Material.MANGROVE_LEAVES, Material.MANGROVE_PROPAGULE);
     }};
 
     // guarantee sapling and seed on first break

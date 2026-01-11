@@ -63,7 +63,7 @@ GitHub.
 ## Download
 
 The direct download link for the latest version is available
-[here](https://github.com/SimonDMC/BorderHoarder/releases/latest/download/BorderHoarder.jar).
+[here](https://github.com/RKlazinga/BorderHoarder/releases/latest/download/BorderHoarder.jar).
 
 # For Developers
 - This fork uses a blacklist system instead of the original whitelist.
