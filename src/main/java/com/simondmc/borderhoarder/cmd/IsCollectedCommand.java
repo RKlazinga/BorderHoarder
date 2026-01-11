@@ -13,13 +13,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.lang.Math.round;
+
 public class IsCollectedCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (label.equalsIgnoreCase("iscollected")) {
             if (args.length < 1) {
-                sender.sendMessage("§cUsage: /iscollected <item>");
+                sender.sendMessage("§cUsage: /iscollected <pattern>");
                 return true;
             }
 
@@ -42,6 +44,8 @@ public class IsCollectedCommand implements CommandExecutor {
                 sender.sendMessage("§c Did not find any items matching '" + queryString + "'!");
                 return true;
             }
+
+
             List<String> matchingCollected = new ArrayList<>();
             List<String> matchingNotCollected = new ArrayList<>();
 
@@ -54,14 +58,18 @@ public class IsCollectedCommand implements CommandExecutor {
                 }
             }
 
-            sender.sendMessage("§eFound " + (matchingCollected.size() + matchingNotCollected.size()) + " items matching '" + queryString + "' (" + matchingCollected.size() + " collected)");
+            sender.sendMessage("§eResults for '" + queryString + "':");
 
             for (String m : matchingCollected) {
-                sender.sendMessage("§a" + m + " has been collected");
+                sender.sendMessage("§a☑ " + m);
             }
             for (String m : matchingNotCollected) {
-                sender.sendMessage("§c" + m + " has not been collected");
+                sender.sendMessage("§c☐ " + m);
             }
+
+            int matchCount = matchingCollected.size();
+            int totalCount = matchCount + matchingNotCollected.size();
+            sender.sendMessage("§e" + matchCount + "/" + totalCount + " items collected (" + round(((double) matchCount / (double) totalCount) * 100d) + "%) matching '" + queryString + "'");
 
             return true;
         }
