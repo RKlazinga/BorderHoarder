@@ -23,7 +23,7 @@ public final class BorderHoarder extends JavaPlugin {
         plugin.getCommand("joinbordergame").setExecutor(new JoinGameCommand());
         plugin.getCommand("iscollected").setExecutor(new IsCollectedCommand());
         // populate item dictionary
-        ItemDictionary.populateDict();
+        ItemDictionary.populateDictUsingBlacklist();
         // register listener
         getServer().getPluginManager().registerEvents(new PlayerListener(), plugin);
         getServer().getPluginManager().registerEvents(new ObtainItemListener(), plugin);
