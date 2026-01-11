@@ -103,7 +103,7 @@ public class BorderWorldCreator {
         }
 
         // world settings
-        w.setGameRule(GameRule.SPAWN_RADIUS, 0);
+        w.setGameRule(GameRules.RESPAWN_RADIUS, 0);
 
         // set border
         WorldBorder border = w.getWorldBorder();

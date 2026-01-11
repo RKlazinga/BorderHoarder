@@ -1,6 +1,8 @@
 # BorderHoarder
 
 Collect unique items to expand the border!
+_This is a fork of the [original repo](https://github.com/SimonDMC/BorderHoarder), written to be easier to keep up to date with new Minecraft versions. See [this section](#for-developers) for more information._
+As of writing, this plugin is verified to be up to date with Minecraft 1.21.11. The plugin is intended to be used with [PaperMC](papermc.io).
 
 ## Starting a Game
 
@@ -22,7 +24,7 @@ Collect unique items to expand the border!
   `/viewmissingitems`
 - As the game goes on, figuring out whether you already have an
   item or not gets more difficult, so you can use
-  `/iscollected <item>` to check if an item has been collected
+  `/iscollected <name>` to check if one or more items have been collected. All items matching the text you provide will be listed.
 
 ### Limitations
 
@@ -33,10 +35,6 @@ Collect unique items to expand the border!
   with the overworld), but the end doesn't have a border, just
   so that obtaining an elytra and outer end island items is
   possible
-- As of 1.20.4, there are 1,147 total obtainable items in
-  survival, and collecting any other item (such as bedrock
-  or command blocks) will not count towards the progression and
-  will not expand the border.
 
 ### Competitive Mode
 
@@ -49,11 +47,8 @@ Collect unique items to expand the border!
 
 ## Compatibility
 
-- The plugin runs on Bukkit, meaning any fork of Bukkit should
-  work, including Spigot and Paper
-- The game is intended to be played on 1.20.4. It will probably 
-  not work below 1.20.3, and I can't guarantee it will work on 
-  future versions until I update it.
+- The plugin runs on PaperMC.
+- The game is intended to be played on 1.21.11. It may not work on previous versions, though it is intended to keep working on future versions by using a blacklist system.
 - The game can be played with any number of players, but it is
   recommended to play with 2-4 players. The more players there
   are, the easier the game will get.
@@ -67,3 +62,6 @@ GitHub.
 
 The direct download link for the latest version is available
 [here](https://github.com/SimonDMC/BorderHoarder/releases/latest/download/BorderHoarder.jar).
+
+# For Developers
+- This fork uses a blacklist system instead of the original whitelist. 
