@@ -1,7 +1,9 @@
 # BorderHoarder
 
 Collect unique items to expand the border!
+
 _This is a fork of the [original repo](https://github.com/SimonDMC/BorderHoarder), written to be easier to keep up to date with new Minecraft versions. See [this section](#for-developers) for more information._
+
 As of writing, this plugin is verified to be up to date with Minecraft 1.21.11. The plugin is intended to be used with [PaperMC](papermc.io).
 
 ## Starting a Game
@@ -64,4 +66,6 @@ The direct download link for the latest version is available
 [here](https://github.com/SimonDMC/BorderHoarder/releases/latest/download/BorderHoarder.jar).
 
 # For Developers
-- This fork uses a blacklist system instead of the original whitelist. 
+- This fork uses a blacklist system instead of the original whitelist.
+  - A specific set of items (`Material` elements) is blacklsited in `ItemDictionary`
+  - All items ending with `"_SPAWN_EGG"` are blacklisted
