@@ -12,3 +12,4 @@ commands:
   viewmissingitems:
   joinbordergame:
   iscollected:
+  viewprogress:
