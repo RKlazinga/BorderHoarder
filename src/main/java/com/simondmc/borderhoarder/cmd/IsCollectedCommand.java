@@ -29,12 +29,13 @@ public class IsCollectedCommand implements CommandExecutor {
             List<String> negativeArgs = Arrays.stream(args).filter((a) -> a.startsWith("-")).map((a) -> a.substring(1)).toList();
             List<String> positiveArgs = Arrays.stream(args).filter((a) -> !a.startsWith("-")).toList();
 
-            String itemName = StringUtils.join(positiveArgs, " ");
             Material item;
 
-            List<String> itemList = ItemDictionary.getDict().values().stream().toList();
+            List<String> matchingItems = ItemDictionary.getDict().values().stream().toList();
 
-            List<String> matchingItems = itemList.stream().filter((i) -> i.toLowerCase().contains(itemName.toLowerCase())).toList();
+            for (String pos: positiveArgs) {
+                matchingItems = matchingItems.stream().filter((m) -> m.toLowerCase().contains(pos.toLowerCase())).toList();
+            }
 
             for (String neg: negativeArgs) {
                 matchingItems = matchingItems.stream().filter((m) -> !m.toLowerCase().contains(neg.toLowerCase())).toList();
@@ -44,7 +45,6 @@ public class IsCollectedCommand implements CommandExecutor {
                 sender.sendMessage("§c Did not find any items matching '" + queryString + "'!");
                 return true;
             }
-
 
             List<String> matchingCollected = new ArrayList<>();
             List<String> matchingNotCollected = new ArrayList<>();
